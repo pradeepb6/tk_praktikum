@@ -1,0 +1,180 @@
+<div ng-controller="conferenceController">
+
+    <div ng-show="status" class="alert alert-{{status}}">
+        {{message}}
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <form name="conferenceForm" id="conferenceForm" class="form-horizontal" role="form"
+                          ng-submit="saveConference()">
+                        <div class="form-group"
+                             ng-class="{ 'has-error' : conferenceForm.confName.$invalid && (!conferenceForm.confName.$pristine || conferenceForm.confName.$touched) }">
+                            <label class="control-label col-sm-2">Conference Name</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="confName" name="confName" placeholder="Conference" ng-model="conf.name" required>
+                                <div ng-show="conferenceForm.confName.$invalid && (!conferenceForm.confName.$pristine || conferenceForm.confName.$touched) "
+                                     class="help-block">
+                                    Please enter name of Conference!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{ 'has-error' : conferenceForm.confDesc.$invalid && (!conferenceForm.confDesc.$pristine || conferenceForm.confDesc.$touched) }">
+                                <label class="control-label col-sm-2">Description</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" id="confDesc" name="confDesc" ng-model="conf.desc"
+                                          placeholder="Details of the the conference" required></textarea>
+                                <div ng-show="conferenceForm.confDesc.$invalid && (!conferenceForm.confDesc.$pristine || conferenceForm.confDesc.$touched) "
+                                     class="help-block">
+                                    Please enter the description of Conference!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-sm-8 page-header text-center">
+                                <h3>Overall Duration</h3>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : !popups[0].isValid}">
+                            <label class="control-label col-sm-2">Start</label>
+                            <div class="col-sm-8">
+                                <p class="input-group">
+                                    <input type="text" name="date0" id="date0" class="form-control"
+                                           uib-datepicker-popup="{{format}}"
+                                           ng-model="conf.start_date" is-open="popups[0].opened"
+                                           datepicker-options="popups[0].dateOptions"
+                                           ng-required="true" close-text="Close" alt-input-formats="altInputFormats"
+                                           ng-change="validateDateRange()" ng-disabled="popups[0].dateDisabled">
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="open(0)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                      </button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : !popups[1].isValid}">
+                            <label class="control-label col-sm-2">End</label>
+                            <div class="col-sm-8">
+                                <p class="input-group">
+                                    <input type="text" name="date1" class="form-control"
+                                           uib-datepicker-popup="{{format}}"
+                                           ng-model="conf.end_date" is-open="popups[1].opened"
+                                           datepicker-options="popups[1].dateOptions"
+                                           ng-required="true" close-text="Close" alt-input-formats="altInputFormats"
+                                           ng-change="validateDateRange()">
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="open(1)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                      </button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-sm-8 page-header text-center">
+                                <h3>Submission Timeline</h3>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : !popups[2].isValid}">
+                            <label class="control-label col-sm-2">Start</label>
+                            <div class="col-sm-8">
+                                <p class="input-group">
+                                    <input type="text" name="date2" class="form-control"
+                                           uib-datepicker-popup="{{format}}"
+                                           ng-model="conf.submission_start_date" is-open="popups[2].opened"
+                                           datepicker-options="popups[2].dateOptions"
+                                           ng-required="true" close-text="Close" alt-input-formats="altInputFormats"
+                                           ng-change="validateDateRange()">
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="open(2)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                      </button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : !popups[3].isValid}">
+                            <label class="control-label col-sm-2">End</label>
+                            <div class="col-sm-8">
+                                <p class="input-group">
+                                    <input type="text" name="date3" class="form-control"
+                                           uib-datepicker-popup="{{format}}"
+                                           ng-model="conf.submission_end_date" is-open="popups[3].opened"
+                                           datepicker-options="popups[3].dateOptions"
+                                           ng-required="true" close-text="Close" alt-input-formats="altInputFormats"
+                                           ng-change="validateDateRange()">
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="open(3)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                      </button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-sm-8 page-header text-center">
+                                <h3>Review Timeline</h3>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : !popups[4].isValid}">
+                            <label class="control-label col-sm-2">Start</label>
+                            <div class="col-sm-8">
+                                <p class="input-group">
+                                    <input type="text" name="date4" class="form-control"
+                                           uib-datepicker-popup="{{format}}"
+                                           ng-model="conf.review_start_date" is-open="popups[4].opened"
+                                           datepicker-options="popups[4].dateOptions"
+                                           ng-required="true" close-text="Close" alt-input-formats="altInputFormats"
+                                           ng-change="validateDateRange()">
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="open(4)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                      </button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : !popups[5].isValid}">
+                            <label class="control-label col-sm-2">End</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <p class="input-group">
+                                    <input type="text" name="date5" class="form-control"
+                                           uib-datepicker-popup="{{format}}"
+                                           ng-model="conf.review_end_date" is-open="popups[5].opened"
+                                           datepicker-options="popups[5].dateOptions"
+                                           ng-required="true" close-text="Close" alt-input-formats="altInputFormats"
+                                           ng-change="validateDateRange()">
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="open(5)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                      </button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <div class="pull-right hidden-xs">
+                                    <button type="submit" class="btn btn-primary pull-right" ng-disabled="conferenceForm.$invalid || conferenceForm.$pristine">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-info visible-xs col-xs-12" ng-disabled="conferenceForm.$invalid || conferenceForm.$pristine">
+                                    Save
+                                </button>
+                            </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="importantDates">
+    <div class="alert" role="alert">
+        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><span class="h3"> &nbsp; &nbsp;Important Dates</span>
+    </div>
+    <table class="table table-responsive table-bordered">
+        <tr>
+            <th>Conference Start</th>
+            <td>{{conference.start_date | amDateFormat:'DD.MM.YYYY'}}</td>
+        </tr>
+        <tr>
+            <th>Conference End</th>
+            <td>{{conference.end_date | amDateFormat:'DD.MM.YYYY'}}</td>
+        </tr>
+        <tr>
+            <th>Submission Start</th>
+            <td>{{conference.submission_start_date | amDateFormat:'DD.MM.YYYY'}}</td>
+        </tr>
+        <tr>
+            <th>Submission End</th>
+            <td>{{conference.submission_end_date | amDateFormat:'DD.MM.YYYY'}}</td>
+        </tr>
+        <tr>
+            <th>Review Start</th>
+            <td>{{conference.review_start_date | amDateFormat:'DD.MM.YYYY'}}</td>
+        </tr>
+        <tr>
+            <th>Review End</th>
+            <td>{{conference.review_end_date | amDateFormat:'DD.MM.YYYY'}}</td>
+        </tr>
+    </table>
+</div>

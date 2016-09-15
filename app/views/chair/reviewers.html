@@ -1,0 +1,108 @@
+<div class="bs-example centered">
+    <div class="col-sm-12 col-md-12 col-xs-12">
+        <h3 class="text-center">List of Reviewers</h3>
+    </div>
+    <div class="panel-group col-md-10 col-sm-12 col-xs-12 col-lg-10" id="accordion">
+        <div class="panel panel-default" ng-repeat="reviewer in reviewers.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" ng-click="getOtherDetails(reviewer._id)" data-target="#{{reviewer._id}}">{{ reviewer.first_name | capitalize}} {{reviewer.last_name | capitalize}}</a>
+                </h4>
+            </div>
+            <div id="{{reviewer._id}}" class="panel-collapse collapse">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div>
+                            <h2 class="text-center">User Details</h2>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title margin-left-20">{{ reviewer.first_name | capitalize}} {{reviewer.last_name | capitalize}}</h3>
+                                </div>
+                                <div class="panel-body w3-card-4">
+                                    <div class="row">
+                                        <div class="col-md-3 col-lg-3 col-sm-12 hidden-xs" align="center">
+                                            <img alt="User Pic" src="http://localhost:3000/styles/images/avatar.png"
+                                                 class="img-circle img-responsive">
+                                        </div>
+                                        <div class="visible-xs col-xs-12 image-centered" align="center">
+                                            <img alt="User Pic" src="http://localhost:3000/styles/images/avatar.png"
+                                                 class="img-circle img-responsive">
+                                        </div>
+                                        <div class=" col-md-9 col-lg-9 col-sm-12 col-xs-12">
+                                            <table class="table table-user-information">
+                                                <tbody>
+                                                <tr>
+                                                    <td>Email</td>
+                                                    <td><a href="mailto:{{ reviewer.email }}">{{reviewer.email}}</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Registered On:</td>
+                                                    <td>{{ reviewer.registered_on | amDateFormat:'DD.MM.YYYY'}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Address:</td>
+                                                    <td>{{ reviewer.address_line | capitalize}}&comma; {{reviewer.city | capitalize}}
+                                                        <br/> {{ reviewer.state | capitalize}}&comma;  {{reviewer.country | capitalize}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Institution:</td>
+                                                    <td>{{ reviewer.institution | capitalize}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-center">User Reviews</h2>
+                            <div ng-if="userReviewsDetails.length < 1">
+                                <p>This user has not reviewed anything!!</p>
+                            </div>
+                            <uib-accordion close-others="true">
+                                <div ng-repeat="review in userReviewsDetails">
+                                    <div uib-accordion-group class="panel-default" is-open="openIndex[$index]">
+                                        <uib-accordion-heading>
+                                            <p>{{review.paper_title | capitalize}}
+                                                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': openIndex[$index], 'glyphicon-chevron-right': !openIndex[$index]}"></i>
+                                            </p>
+                                        </uib-accordion-heading>
+                                        <div class="w3-card-4" style="  width:100%;">
+                                            <header class="w3-container w3-light-grey">
+                                                <h1>{{review.paper_title}} <span
+                                                        class="badge">{{review.overall_evaluation}}</span></h1>
+                                            </header>
+                                            <div class="w3-container">
+                                                <br/>
+                                                <p>
+                                                    <strong>Summary </strong>{{review.summary}}
+                                                    <br/>
+                                                    <strong>Major strong points </strong>{{ review.major_strong_points }}
+                                                    <br/>
+                                                    <strong>Weak points: </strong>{{review.weak_points}}
+                                                    <br/>
+                                                    <strong>Detailed comments: </strong>{{ review.detailed_comments }}
+                                                </p>
+                                                <br/>
+                                            </div>
+                                            <footer class="w3-container w3-light-grey">
+                                                <h5>Reviewed on {{review.reviewed_date | amDateFormat:'DD.MM.YYYY'}}</h5>
+                                            </footer>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <center>
+            <ul uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+            </ul>
+        </center>
+    </div>
+</div>

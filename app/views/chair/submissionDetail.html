@@ -1,0 +1,106 @@
+<div class="row centered">
+    <div class="col-md-10">
+        <div class="w3-card-4">
+
+            <header class="w3-container w3-light-grey">
+                <h1>{{submission.title | capitalize:true}} <span class="badge">{{submission.status}}</span></h1>
+            </header>
+
+            <div class="w3-container">
+                <br/>
+                <p>
+                    <strong>Co-authors: </strong>
+                    <span ng-repeat="coauthor in coAuthors | limitTo:1"><i>{{coauthor.first_name | capitalize}} {{coauthor.last_name | capitalize}}</i></span>
+                    <span ng-repeat="coauthor in coAuthors" ng-if="!$first">, <i>{{coauthor.first_name | capitalize}} {{coauthor.last_name | capitalize}}</i></span>
+                    <br>
+                    <strong>Abstract: </strong>{{submission.abstract | capitalize}}
+                    <br/>
+                    <strong>Keywords: </strong>{{ submission.keywords.join(', ') }}
+                </p>
+                <br/>
+            </div>
+
+            <footer class="w3-container w3-light-grey">
+                <h5>Submitted by <a ui-sref="chairUserDetail({id: author._id})">{{author.first_name | capitalize}} {{author.last_name | capitalize}} <em>({{author.email}})</em></a> on {{submission.date_submitted | amDateFormat:'DD.MM.YYYY'}}
+                    <br/><br/>
+                    <div class="pull-right margin-bottom-20">
+                        <input type="button" ng-click="modifySubmission('withdrawn')" ng-disabled="submission.status == 'withdrawn'" class="btn btn-danger" value="Withdraw" />
+                        <input type="button" ng-click="modifySubmission('accepted')" ng-disabled="submission.status == 'accepted'" class="btn btn-success" value="Accept" />
+                        <input type="button" ng-click="modifySubmission('rejected')" ng-disabled="submission.status == 'rejected'" class="btn btn-warning" value="Reject" />
+                    </div>
+                    <br/>
+                </h5>
+
+            </footer>
+        </div>
+
+        <div>
+            <div ng-if="reviewEnded == true">
+                <h1>Reviews</h1>
+                <div id="reviewSummary">
+                    <p>Fancy charts go here</p>
+                </div>
+                <div id="reviews">
+                    <div ng-if="reviews.length < 1">
+                        <p>There are no reviews submitted for this paper!!</p>
+                    </div>
+                    <div class="panel panel-default" ng-repeat="review in reviews">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                {{review.paper_title | capitalize}}
+                                <span class="badge pull-right
+                            ng-class:{ 'custom-danger': review.overall_evaluation == 1,
+                                    'custom-warning': review.overall_evaluation == 2,
+                                    'custom-info': review.overall_evaluation == 3,
+                                    'custom-accepted': review.overall_evaluation == 4,
+                                    'custom-success': review.overall_evaluation == 5};">
+                        {{ getRatingText(review.overall_evaluation)}}</span>
+                            </h4>
+                        </div>
+                        <div id="{{review._id}}" class="panel">
+                            <p class="margin-left-20 margin-top-20 margin-bottom-20">Reviewer name: <a href  ui-sref="chairUserDetail({id: review.user._id})">{{review.user.first_name | capitalize}} {{review.user.last_name | capitalize}}</a></p>
+                            <div class="panel-body">
+                                <div class="card">
+                                    <div class="card-header">Detailed Comments</div>
+                                    <div class="card-block">
+                                        <p class="card-text">{{review.detailed_comments | capitalize}}</p>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">Strong points</div>
+                                    <div class="card-block">
+                                        <p class="card-text">{{review.major_strong_points | capitalize}}</p>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">Weak points</div>
+                                    <div class="card-block">
+                                        <p class="card-text">{{review.weak_points | capitalize}}</p>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">Summary</div>
+                                    <div class="card-block">
+                                        <p class="card-text">{{review.summary | capitalize}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="afterSubmissionAndBeforeReview == true">
+                <h1>Reviewers</h1>
+                <p ng-if="reviews.length == 0">No reviewers assigned</p>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="review in reviews">
+                        <a href ui-sref="chairUserDetail({id: review.user._id})">{{review.user.first_name | capitalize}} {{review.user.last_name | capitalize}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+</div>

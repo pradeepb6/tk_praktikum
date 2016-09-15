@@ -1,0 +1,128 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div>
+            <h2>User Details</h2>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ user.first_name | capitalize}} {{ user.last_name | capitalize}}</h3>
+                </div>
+                <div class="panel-body w3-card-4">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 col-sm-12 hidden-xs" align="center">
+                            <img alt="User Pic" src="http://localhost:3000/styles/images/avatar.png"
+                                 class="img-circle img-responsive">
+                        </div>
+                        <div class="visible-xs col-xs-12 image-centered" align="center">
+                            <img alt="User Pic" src="http://localhost:3000/styles/images/avatar.png"
+                                 class="img-circle img-responsive">
+                        </div>
+                        <div class=" col-md-9 col-lg-9 ">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>Email</td>
+                                    <td><a href="mailto:{{ user.email }}">{{user.email}}</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Registered On:</td>
+                                    <td>{{ user.registered_on | amDateFormat:'DD.MM.YYYY'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Address:</td>
+                                    <td>{{ user.address_line | capitalize}}&comma; {{user.city | capitalize}}
+                                        <br/> {{ user.state | capitalize}}&comma; {{user.country | capitalize}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Institution:</td>
+                                    <td>{{ user.institution | capitalize}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2>User Submissions</h2>
+            <div ng-repeat="submission in submissions">
+                <div class="w3-card-4">
+
+                    <header class="w3-container w3-light-grey">
+                        <h1>{{submission.title | capitalize:true}}
+                            <span class="badge alert-success pull-right"
+                                  ng-class="{'custom-danger': submission.status == 'rejected',
+                                            'custom-warning': submission.status == 'incomplete',
+                                            'custom-info': submission.status == 'withdrawn',
+                                            'custom-success': submission.status == 'complete',
+                                            'custom-accepted': submission.status == 'accepted'}">
+                            {{submission.status}}</span></h1>
+                    </header>
+
+                    <div class="w3-container">
+                        <br/>
+                        <p>
+                            <strong><strong>Abstract: </strong></strong>{{submission.abstract | capitalize}}
+                            <br/>
+                            <strong><strong>Keywords:</strong> </strong>{{ submission.keywords.join(', ') }}
+                        </p>
+                        <br/>
+                    </div>
+
+                    <footer class="w3-container w3-light-grey">
+                        <h5><strong>Submitted on </strong>{{submission.date_submitted | amDateFormat:'DD.MM.YYYY'}} </h5>
+
+                    </footer>
+                </div>
+                <br/>
+            </div>
+
+        </div>
+        <div>
+            <h2>User Reviews</h2>
+            <div class="panel panel-default" ng-repeat="review in reviews">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        {{review.paper_title | capitalize}}
+                        <span class="badge pull-right
+                            ng-class:{ 'custom-danger': review.overall_evaluation == 1,
+                                    'custom-warning': review.overall_evaluation == 2,
+                                    'custom-info': review.overall_evaluation == 3,
+                                    'custom-accepted': review.overall_evaluation == 4,
+                                    'custom-success': review.overall_evaluation == 5};">
+                        {{ getRatingText(review.overall_evaluation)}}</span>
+                    </h4>
+                </div>
+                <div id="{{review._id}}" class="panel">
+                    <div class="panel-body">
+                        <div class="card">
+                            <div class="card-header"><strong>Detailed Comments</strong></div>
+                            <div class="card-block">
+                                <p class="card-text">{{review.detailed_comments | capitalize}}</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><strong>Strong points</strong></div>
+                            <div class="card-block">
+                                <p class="card-text">{{review.major_strong_points | capitalize}}</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><strong>Weak points</strong></div>
+                            <div class="card-block">
+                                <p class="card-text">{{review.weak_points | capitalize}}</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><strong>Summary</strong></div>
+                            <div class="card-block">
+                                <p class="card-text">{{review.summary | capitalize}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

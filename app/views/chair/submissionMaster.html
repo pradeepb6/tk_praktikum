@@ -1,0 +1,48 @@
+<style>
+    .table > tbody > tr > td{
+    vertical-align: middle !important;
+}
+    @media (max-width: 640px) {
+        .withdraw-btn {
+            margin-top: 5px;
+        }
+    }
+</style>
+<div class="row centered">
+    <div class="col-md-12">
+        <div class="col-md-offset-1 col-md-8">
+            <p class="alert alert-{{status}}" ng-if="message">{{message}}</p>
+        </div>
+        <div class="col-md-2">
+            <input type="button" ng-click="acceptAll()" class="btn btn-success pull-right margin-bottom-20 margin-right-20" value="Accept all">
+        </div>
+    </div>
+    <div class="col-md-10">
+        <table class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th class="hidden-xs">Author</th>
+                <th>Submitted on</th>
+                <th>Actions</th>
+            </tr>
+            <tr ng-repeat="submission in submissions | orderBy:'title'">
+                <td>{{submission.title | capitalize:true}}</td>
+                <td><span class="label
+                        ng-class:{'custom-danger': submission.status == 'rejected',
+                                'custom-warning': submission.status == 'incomplete',
+                                'custom-info': submission.status == 'withdrawn',
+                                'custom-success': submission.status == 'complete',
+                                'custom-accepted': submission.status == 'accepted'};">
+                {{submission.status}}</span></td>
+                <td class="hidden-xs">{{ submission.author.first_name | capitalize}} {{submission.author.last_name | capitalize }}</td>
+                <td>{{submission.date_submitted | amDateFormat:'DD.MM.YYYY'}}</td>
+                <td>
+                    <input type="button" ui-sref="chairSubmissionDetail({id: submission._id})" class="btn btn-primary" value="Details">
+                    <!--<input type="button" class="btn btn-danger withdraw-btn" value="Withdraw">-->
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col col-md-12" ng-controller="importantDatesEventsController">
+        <div class="well">
+            <h1>{{ conference.name }}</h1>
+            <p>{{ conference.desc }}</p>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-6">
+            <div class="submission-list clearfix" ng-if="submissions && can('isAuthor')">
+                <div class="alert" role="alert">
+                    <span class="h3"> Papers submitted by you</span>
+                </div>
+                <h5 ng-if="submissions.length < 1" class="margin-left-20"> You have not submitted anything!</h5>
+                <ul class="list-group">
+                    <li ng-repeat="submission in submissions | limitTo: limitTo"
+                        class="list-group-item">
+                        <h5>{{submission.title}}
+                        <span class="badge alert-success pull-right"
+                              ng-class="{'custom-danger': submission.status == 'rejected',
+                                        'custom-warning': submission.status == 'incomplete',
+                                        'custom-info': submission.status == 'withdrawn',
+                                        'custom-success': submission.status == 'complete',
+                                        'custom-accepted': submission.status == 'accepted'}">
+                            {{submission.status}}</span>
+                        </h5>
+                    </li>
+                </ul>
+                <button type="button" class="btn btn-info pull-right" ng-if="submissions.length > 0" ui-sref="authorDashboard">Show More</button>
+            </div>
+            <div class="reviews-list clearfix" ng-if="reviews && can('isReviewer')">
+                <div class="alert" role="alert">
+                    <span class="h3"> Reviews done by you</span>
+                </div>
+                <h5 ng-if="reviews.length < 1" class="margin-left-20"> There are not reviews assigned for you!</h5>
+                <ul class="list-group">
+                    <li ng-repeat="review in reviews | limitTo: limitTo"
+                        class="list-group-item">
+                        <h5>{{review.paper_title}}
+                        <span class="badge pull-right
+                            ng-class:{ 'custom-danger': review.overall_evaluation == 1,
+                                    'custom-warning': review.overall_evaluation == 2,
+                                    'custom-info': review.overall_evaluation == 3,
+                                    'custom-accepted': review.overall_evaluation == 4,
+                                    'custom-success': review.overall_evaluation == 5};">
+                        {{ getRatingText(review.overall_evaluation)}}</span>
+                        </h5>
+                    </li>
+                </ul>
+                <button type="button" class="btn btn-info pull-right" ng-if="reviews.length > 0" ui-sref="reviewDashboard">Show More</button>
+            </div>
+            <div class="paper-reviews-list" ng-if="can('isAuthor') && reviewsForAuthorSubmissions.length > 0">
+                <div class="alert" role="alert">
+                    <span class="h3"> Reviews for your paper</span>
+                </div>
+                <ul class="list-group">
+                    <li ng-repeat="review in reviewsForAuthorSubmissions | limitTo: limitTo"
+                        class="list-group-item">
+                        <h5>{{review.paper_title | capitalize:true}}
+                        <span class="badge pull-right
+                            ng-class:{ 'custom-danger': review.overall_evaluation == 1,
+                                    'custom-warning': review.overall_evaluation == 2,
+                                    'custom-info': review.overall_evaluation == 3,
+                                    'custom-accepted': review.overall_evaluation == 4,
+                                    'custom-success': review.overall_evaluation == 5};">
+                        {{ getRatingText(review.overall_evaluation)}}</span>
+                        </h5>
+                    </li>
+                </ul>
+                <button type="button" class="btn btn-info pull-right" ng-if="reviewsForAuthorSubmissions.length > 0" ui-sref="reviewsForAuthor">Show More</button>
+            </div>
+        </div>
+        <div class="col-sm-6" ng-controller="importantDatesEventsController">
+            <div ng-include="'views/importantDates.html'"></div>
+            <div ng-include="'views/importantEvents.html'"></div>
+        </div>
+    </div>
+</div>
+
+<br><br>

@@ -1,0 +1,81 @@
+<div class="container-fluid">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>#</th>
+            <th>Title</th>
+            <th>Date Submitted</th>
+            <th>Rating</th>
+        </tr>
+        </thead>
+        <tbody id="submission_table">
+        <tr ng-repeat-start="(index, review) in reviewsForAuthorSubmissions">
+            <td>
+                <button data-toggle="collapse" class="btn btn-default btn-xs" data-target="#data{{index}}"
+                        data-parent="#submission_table"
+                        class="accordion-toggle" data-ng-click="toggle = !toggle"><span
+                        class="glyphicon glyphicon-eye-open" ng-class="{'glyphicon-eye-close' : toggle}"></span>
+                </button>
+            </td>
+            <td>{{index+1}}</td>
+            <td>{{review.paper_title}}</td>
+            <td>{{review.reviewed_date | amDateFormat:'DD.MM.YYYY'}}</td>
+            <td><span class="badge
+                            ng-class:{ 'custom-danger': review.overall_evaluation == 1,
+                                    'custom-warning': review.overall_evaluation == 2,
+                                    'custom-info': review.overall_evaluation == 3,
+                                    'custom-accepted': review.overall_evaluation == 4,
+                                    'custom-success': review.overall_evaluation == 5};">
+                        {{ getRatingText(review.overall_evaluation)}}</span>
+            </td>
+        </tr>
+        <tr ng-repeat-end>
+            <td colspan="12" class="hiddenRow accordion-group">
+                <div class="accordian-body collapse" id="data{{index}}">
+                    <div class=" section">
+                        <table class="table">
+                            <tr class="info">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Summary: </label></div>
+                                        <div class="col-md-10">{{review.summary}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Strong points: </label></div>
+                                        <div class="col-md-10">{{review.major_strong_points}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Weak points: </label></div>
+                                        <div class="col-md-10">{{review.weak_points}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Detailed comments: </label></div>
+                                        <div class="col-md-10">{{review.detailed_comments}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

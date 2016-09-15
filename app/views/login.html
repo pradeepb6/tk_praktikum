@@ -1,0 +1,153 @@
+<div class="row centered">
+    <div class="col-md-4 col-sm-6 col-xs-10 well" ng-show="loginFormDisplay">
+        <div ng-if="message" class="alert alert-info">{{ message }}</div>
+        <h2>Sign in using your account</h2>
+        <div ng-if="loginError" class="alert alert-danger">{{ loginError }}</div>
+
+        <form name="loginForm" method="post" role="form" ng-submit="submitLoginForm()" novalidate>
+            <div class="form-group"
+                 ng-class="{ 'has-error' : loginForm.loginEmail.$invalid && (!loginForm.loginEmail.$pristine || loginForm.loginEmail.$touched) }">
+                <input type="text" name="loginEmail" id="loginEmail" tabindex="1" class="form-control"
+                       placeholder="Email" value="" ng-model="loginEmail" required>
+                <div ng-show="loginForm.loginEmail.$invalid && (!loginForm.loginEmail.$pristine || loginForm.loginEmail.$touched)"
+                     class="help-block">
+                    Please enter email!
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' : loginForm.loginPassword.$invalid && (!loginForm.loginPassword.$pristine || loginForm.loginPassword.$touched) }">
+                <input type="password" name="loginPassword" id="loginPassword" tabindex="2" class="form-control"
+                       placeholder="Password" ng-model="loginPassword" required>
+                <div ng-show="loginForm.loginPassword.$invalid && (!loginForm.loginPassword.$pristine || loginForm.loginPassword.$touched)"
+                     class="help-block">
+                    Please enter password!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <button type="submit" id="login-submit" name="login-submit" ng-click='login()' class="col-xs-12 btn btn-primary"
+                                ng-disabled="loginForm.$invalid || loginForm.$pristine">
+                            Log In
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <a href="#/login" ng-click='openResetForm()' tabindex="5" class="forgot-password">Forgot
+                                Password?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="#/login" ng-click='openRegisterForm()'>Don't have an account? Click here to register</a>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="col-md-4 col-sm-6 col-xs-10 well" ng-show="registerFormDisplay">
+        <h2>Don't have an account? Register</h2>
+        <div ng-if="registerError" class="alert alert-danger">{{ registerError }}</div>
+        <form name="registerForm" method="post" role="form" novalidate>
+            <div class="form-group"
+                 ng-class="{ 'has-error' : registerForm.registerEmail.$invalid && (!registerForm.registerEmail.$pristine || registerForm.registerEmail.$touched) }">
+                <div class="col">
+                    <input type="email" name="registerEmail" ng-model="registerEmail" id="registerEmail" tabindex="1"
+                           class="form-control" placeholder="Email Address"
+                           value="" required>
+                    <div ng-show="registerForm.registerEmail.$invalid && (!registerForm.registerEmail.$pristine || registerForm.registerEmail.$touched) "
+                         class="help-block">
+                        Please enter email!
+                    </div>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' : registerForm.registerPassword.$invalid && (!registerForm.registerPassword.$pristine || registerForm.registerPassword.$touched) }">
+                <input type="password" name="registerPassword" ng-model="registerPassword" id="registerPassword"
+                       tabindex="2" class="form-control" placeholder="Password" required>
+                <div ng-show="registerForm.registerPassword.$invalid && (!registerForm.registerPassword.$pristine || registerForm.registerPassword.$touched) "
+                     class="help-block">
+                    Please enter your password!
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' : registerForm.registerPasswordConfirm.$invalid && (registerForm.registerPasswordConfirm.$touched || registerForm.registerPasswordConfirm.$error.pwcheck) }">
+                <input type="password" name="registerPasswordConfirm" ng-model="registerPasswordConfirm" id="registerPasswordConfirm" tabindex="2"
+                       class="form-control" placeholder="Confirm Password" pw-check="registerPassword"  required>
+                <div ng-show="registerForm.registerPasswordConfirm.$invalid && (registerForm.registerPasswordConfirm.$touched) "
+                     class="help-block">
+                    Please confirm your password!
+                </div>
+                <div class="help-block" ng-show="registerForm.registerPasswordConfirm.$error.pwcheck">Your passwords don't match.</div>
+            </div>
+            <div class="form-group padding-bottom-20 clearfix">
+                <label class="control-label col-sm-12"> Register as </label>
+                <div class="col-sm-12">
+                    <label class="radio-inline"><input type="radio" name="role_choice"
+                                                       ng-model="role_choice" value="1"
+                                                       ng-required="true"> Author</label>
+                    <label class="radio-inline"><input type="radio" name="role_choice"
+                                                       ng-model="role_choice" value="2"
+                                                       ng-required="true"> Reviewer</label>
+                    <label class="radio-inline"><input type="radio" name="role_choice"
+                                                       ng-model="role_choice" value="3"
+                                                       ng-required="true"> Both</label>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <button type="submit" name="register-submit" ng-click="register()" class="col-xs-12 btn btn-primary"
+                                ng-disabled="registerForm.$invalid || registerForm.$pristine">
+                            Register Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="#/login" ng-click='openLoginForm()'>Already have an account? Click here to login</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-4 col-sm-6 col-xs-10 well" ng-show="resetFormDisply">
+        <h3>Forgot your password?</h3>
+        <div ng-if="resetError" class="alert alert-danger">{{ resetError }}</div>
+        <p> Enter your email and we'll send you the instructions on how to reset your password.</p>
+        <form name="resetForm" method="post" role="form" novalidate>
+            <div class="form-group"
+                 ng-class="{ 'has-error' : resetForm.resetEmail.$invalid && (!resetForm.resetEmail.$pristine || resetForm.resetEmail.$touched) }">
+                <div class="col">
+                    <input type="email" name="resetEmail" ng-model="resetEmail" id="resetEmail" tabindex="1"
+                           class="form-control" placeholder="Email Address"
+                           value="" required>
+                    <div ng-show="resetForm.resetEmail.$invalid && (!resetForm.resetEmail.$pristine || resetForm.resetEmail.$touched) "
+                         class="help-block">
+                        Please enter a valid email!
+                    </div>
+                </div>
+            </div>
+             <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <button type="submit" name="forgot-submit" ng-click='forgotPassword()' class="col-xs-12 btn btn-primary"
+                                ng-disabled="resetForm.$invalid || resetForm.$pristine">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="#/login" ng-click='openLoginForm()'>Go Back</a>
+            </div>
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,238 @@
+<div ng-if="message" class="alert alert-{{status}}">{{ message }}</div>
+<div class="centered padding-bottom-20">
+    <div ng-if="!submission._id && isSubmissionOpen"><h3>New submission</h3></div>
+</div>
+<div class="alert alert-danger text-center" ng-if="!isSubmissionOpen">
+    <p>{{submissionOpenMessage || submissionCloseMessage}}</p>
+    <p>{{submissionInfo}}</p>
+</div>
+<div ng-show="submission._id && isSubmissionOpen">
+    <div class="col-sm-12 padding-bottom-20">
+        <button class="btn btn-primary pull-right col-md-2 col-sm-2 col-xs-12" ui-sref="submission" ng-disabled="!isSubmissionOpen">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Create new submission
+        </button>
+    </div>
+</div>
+<form name="submissionForm" method="post" ng-show="isSubmissionOpen" enctype="multipart/form-data" class="form-horizontal" role="form" novalidate>
+    <div class="form-group"
+         ng-class="{ 'has-error' : submissionForm.submissionTitle.$invalid && (!submissionForm.submissionTitle.$pristine || submissionForm.submissionTitle.$touched) }">
+        <label class="control-label col-sm-2" for="submissionTitle">Title</label>
+        <div class="col-sm-10">
+            <input type="text" class="control form-control" name="submissionTitle" id="submissionTitle"
+                   placeholder="Required" ng-model="submission.title" required ng-readonly="allowModify">
+            <div ng-show="submissionForm.submissionTitle.$invalid && (!submissionForm.submissionTitle.$pristine || submissionForm.submissionTitle.$touched)"
+                 class="help-block">
+                Please enter Title of the paper!
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group"
+         ng-class="{ 'has-error' : submissionForm.submissionAbstract.$invalid && (!submissionForm.submissionAbstract.$pristine || submissionForm.submissionAbstract.$touched) }">
+        <label class="control-label col-sm-2" for="submissionAbstract">Abstract</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" rows="5" name="submissionAbstract" id="submissionAbstract"
+                      placeholder="Required" ng-model="submission.abstract" required ng-readonly="allowModify"></textarea>
+            <div ng-show="submissionForm.submissionAbstract.$invalid && (!submissionForm.submissionAbstract.$pristine || submissionForm.submissionAbstract.$touched)"
+                 class="help-block">
+                Please enter Abstract of the paper!
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if="submission.status == 'incomplete' || !submission.status">
+        <label class="control-label col-sm-2" for="submissionKeywords">Keywords</label>
+        <div class="col-sm-10 tags-input-field">
+            <tags-input class="form-control" name="submissionKeywords" id="submissionKeywords" placeholder="Optional"
+                        ng-model="submission.keywords"></tags-input>
+        </div>
+    </div>
+    <div class="form-group" ng-if="submission.status == 'complete'">
+        <label class="control-label col-sm-2" for="submissionKeywords">Keywords</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="submissionKeywords"
+                   ng-model="submission.keywords" ng-readonly="allowModify">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="btnLaunch">Co-Authors</label>
+        <div class="control-label col-sm-2">
+            <button type="button" class="btn btn-large btn-block btn-info" data-toggle="modal" href='#coAuthorModal'
+                    ng-disabled="allowModify"
+                    id="btnLaunch">Add Authors
+            </button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" ng-show="coAuthors.length">Co-Authors Details</label>
+        <div class="col-sm-10">
+            <table class="table" ng-show="coAuthors.length">
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="coAuthor in coAuthors track by $index">
+                    <td>{{coAuthor.fname}}</td>
+                    <td>{{coAuthor.lname}}</td>
+                    <td>{{coAuthor.email}}</td>
+                    <td><button type="button" class="btn btn-primary" ng-model="editButton" ng-disabled="doesExist(coAuthor)" ng-click="editCoAuthor($index)">Edit</button></td>
+                    <td><button type="button" class="btn btn-danger" ng-click="removeCoAuthor($index)" ng-disabled="allowModify">Remove</button></td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Submission File</label>
+        <div ng-show="submission.pdf_location" class="col-sm-2">
+                <button class="btn btn-large btn-block btn-info" type="button" ng-click="downloadFile()">
+                    <span class="pull-left glyphicon glyphicon-save-file" aria-hidden="true"></span>Download File
+                </button>
+
+        </div>
+
+        <!-- We can enable if its required -->
+        <div ng-show="submission.id && !showFile" class="col-sm-2">
+                <button class="btn btn-large btn-block btn-info" type="button" ng-click="pdfDisplay(true)">
+                    <span class="pull-left glyphicon glyphicon-file" aria-hidden="true"></span>View File
+                </button>
+
+
+        </div>
+        <div ng-show="submission.id && showFile" class="col-sm-2">
+
+            <button  class="btn btn-large btn-block btn-info" type="button" ng-click="pdfDisplay(false)">
+                <span class="pull-left glyphicon glyphicon-file" aria-hidden="true"></span>Hide File
+            </button>
+
+        </div>
+        <div class="col-sm-2" ng-show="submission.status == 'incomplete'|| !submission.status">
+            <label class="btn btn-warning col-xs-12">
+                Browse <input type="file" class="btn btn-default" ngf-select ng-model="pdfFile" ngf-change="getFileName($files, $event, b)" name="file" ngf-pattern="'application/pdf'"
+                              ngf-accept="'application/pdf'" style="display: none;" valid-file required>
+            </label>
+            <span class='label label-info' id="upload-file-info">{{submission.pdf_location || tempFileName}}</span>
+        </div>
+    </div>
+    <div class="form-group" ng-if="submission.status == 'incomplete' || !submission.status">
+        <div class="col-sm-12">
+            <button class="btn btn-primary pull-right col-md-2 col-sm-2 col-xs-12"
+                    ng-disabled="submissionForm.$pristine || (!submissionForm.submissionAbstract.$dirty && !submissionForm.submissionTitle.$dirty && !tempFileName && coAuthorsChanged)"
+                    ng-click="uploadPdf(pdfFile, 'incomplete')">Save as Draft
+            </button>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if="submission.status == 'incomplete'|| !submission.status">
+        <div class="col-sm-12">
+            <button class="btn btn-primary pull-right col-md-2 col-sm-2 col-xs-12"
+                    ng-disabled="(submissionForm.$invalid && !setFormValid) || submission.status == '' && !isSubmissionOpen"
+                    data-toggle="modal" href='#saveChanges'>Submit
+            </button>
+        </div>
+    </div>
+    <div class="form-group" ng-if="allowModify">
+        <div class="col-sm-12">
+            <button class="btn btn-primary pull-right col-md-2 col-sm-2 col-xs-12"
+                    ng-click="withDrawSubmission()" ng-disabled="submission.status == 'withdrawn'">Withdraw
+            </button>
+        </div>
+    </div>
+</form>
+
+<object ng-show="showFile" ng-attr-data="{{filePath}}" style="width: 100%; height:1000px" name="paper"></object>
+
+
+<div class="modal fade" id="coAuthorModal">
+    <div class="modal-dialog">
+        <form name="coAuthorForm" class="form-horizontal" role="form" novalidate>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Add Co-Authors</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group"
+                         ng-class="{ 'has-error' : coAuthorForm.email.$invalid && (!coAuthorForm.email.$pristine || coAuthorForm.email.$touched) || coAuthorError }">
+                        <label class="control-label col-sm-2" for="email">Email:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="email" id="email" ng-model="email" required
+                                   ng-blur="onBlur()">
+                            <div ng-show="coAuthorForm.email.$invalid && (!coAuthorForm.email.$pristine || coAuthorForm.email.$touched)"
+                                 class="help-block">
+                                Please enter Co-author email id!
+                            </div>
+                            <div ng-show="coAuthorError" class="help-block">{{coAuthorError}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group"
+                         ng-class="{ 'has-error' : coAuthorForm.firstname.$invalid && (!coAuthorForm.firstname.$pristine || coAuthorForm.firstname.$touched) }">
+                        <label class="control-label col-sm-2" for="firstname">Firstname</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="firstname" id="firstname" ng-model="fname"
+                                   required>
+                            <div ng-show="coAuthorForm.firstname.$invalid && (!coAuthorForm.firstname.$pristine || coAuthorForm.firstname.$touched) "
+                                 class="help-block">
+                                Please enter Co-author first name!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group"
+                         ng-class="{ 'has-error' : coAuthorForm.lastname.$invalid && (!coAuthorForm.lastname.$pristine || coAuthorForm.lastname.$touched) }">
+                        <label class="control-label col-sm-2" for="lastname">Lastname</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="lastname" id="lastname" ng-model="lname"
+                                   required>
+                            <div ng-show="coAuthorForm.lastname.$invalid && (!coAuthorForm.lastname.$pristine || coAuthorForm.lastname.$touched) "
+                                 class="help-block">
+                                Please enter Co-author last name!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSave" class="btn btn-primary" data-dismiss="modal"
+                            ng-click="saveChanges()"
+                            ng-disabled="coAuthorForm.$invalid || coAuthorForm.$pristine || coAuthorError">Add
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="saveChanges">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+                <p>You cannot modify you submission once you have submitted. If you want to modify your submission later save it as draft. Are you sure you want to submit?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" ng-click="uploadPdf(pdfFile, 'complete')" data-dismiss="modal">Submit</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+

@@ -1,0 +1,210 @@
+<div class="clearfix">
+    <div ng-show="status" class="alert alert-{{status}}">
+        {{saveSuccessMessage}}
+    </div>
+    <form name="userForm" class="form-horizontal" ng-submit="submitForm()" role="form" novalidate>
+        <div class="form-group">
+            <label for="salutation" class="control-label col-sm-2">Salutation</label>
+            <div class="col-sm-8">
+                <select id="salutation"
+                        class="form-control" ng-model="user.salutation">
+                    <option disabled>select</option>
+                    <option value='Mr' ng-selected="'Mr' === user.salutation">Mr</option>
+                    <option value='Miss' ng-selected="'Miss' === user.salutation">Miss</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : userForm.firstName.$invalid && (!userForm.firstName.$pristine || userForm.firstName.$touched) }">
+            <label class="control-label col-sm-2" for="firstName">Firstname</label>
+            <div class="col-sm-8">
+                <input type="text" ng-model="user.first_name" class="form-control" id="firstName" name="firstName"
+                       required/>
+                <div ng-show="userForm.firstName.$invalid && (!userForm.firstName.$pristine || userForm.firstName.$touched)"
+                     class="help-block">
+                    Please enter your First name!
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : userForm.lastName.$invalid && (!userForm.lastName.$pristine || userForm.lastName.$touched) }">
+            <label class="control-label col-sm-2" for="lastName">LastName</label>
+            <div class="col-sm-8">
+                <input class="form-control" ng-model="user.last_name" id="lastName" name="lastName" required/>
+                <div ng-show="userForm.lastName.$invalid && (!userForm.lastName.$pristine || userForm.lastName.$touched) "
+                     class="help-block">
+                    Please enter your Last name!
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="email">Email</label>
+            <div class="col-sm-8">
+                <input class="form-control" ng-model="user.email" id="email" readonly/>
+            </div>
+        </div>
+        <div class="form-group"
+             ng-class="{ 'has-error' : userForm.country.$invalid && (!userForm.country.$pristine || userForm.country.$touched) }">
+            <label class="control-label col-sm-2" for="country">Country</label>
+            <div class="col-sm-8">
+                <input class="form-control" ng-model="user.country" id="country" name="country" required/>
+                <div ng-show="userForm.country.$invalid && (!userForm.country.$pristine || userForm.country.$touched )"
+                     class="help-block">
+                    Please enter your Country name!
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : userForm.state.$invalid && (!userForm.state.$pristine || userForm.state.$touched) }">
+            <label class="control-label col-sm-2" for="state">State</label>
+            <div class="col-sm-8">
+                <input class="form-control" ng-model="user.state" id="state" name="state" required/>
+                <div ng-show="userForm.state.$invalid && (!userForm.state.$pristine || userForm.state.$touched )"
+                     class="help-block">
+                    Please enter your State name!
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : userForm.city.$invalid && (!userForm.city.$pristine || userForm.city.$touched) }">
+            <label class="control-label col-sm-2" for="city">City</label>
+            <div class="col-sm-8">
+                <input class="form-control" ng-model="user.city" id="city" name="city" required/>
+                <div ng-show="userForm.city.$invalid && (!userForm.city.$pristine || userForm.city.$touched )"
+                     class="help-block">
+                    Please enter your City name!
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : userForm.address_line.$invalid && (!userForm.address_line.$pristine || userForm.address_line.$touched) }">
+            <label class="control-label col-sm-2" for="address_line">Address</label>
+            <div class="col-sm-8">
+                <input class="form-control" ng-model="user.address_line" id="address_line" name="address_line"
+                       required/>
+                <div ng-show="userForm.address_line.$invalid && (!userForm.address_line.$pristine || userForm.address_line.$touched) "
+                     class="help-block">
+                    Please enter your Address!
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group"
+             ng-class="{ 'has-error' : userForm.institution.$invalid && (!userForm.institution.$pristine || userForm.institution.$touched) }">
+            <label class="control-label col-sm-2" for="institution">Institution</label>
+            <div class="col-sm-8">
+                <input class="form-control" ng-model="user.institution" id="institution" name="institution"
+                       required/>
+                <div ng-show="userForm.institution.$invalid && (!userForm.institution.$pristine || userForm.institution.$touched)"
+                     class="help-block">
+                    Please enter your Institution name!
+                </div>
+            </div>
+        </div>
+        <div class="form-group hidden-xs">
+            <div class="col-sm-10">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary pull-right" ng-disabled="userForm.$invalid || userForm.$pristine">
+                        Submit
+                    </button>
+                </div>
+                <div class="pull-right col-md-2">
+                    <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#passwordModal">Change Password</button>
+                </div>
+                <div class="pull-right col-md-2">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
+                </div>
+            </div>
+        </div>
+        <div class="visible-xs col-xs-12 padding-bottom-20">
+            <div class="row">
+                <button type="submit" class="btn btn-primary col-xs-12" ng-disabled="userForm.$invalid || userForm.$pristine">
+                    Submit
+                </button>
+            </div>
+            <br>
+            <div class="row">
+                <button type="button" class="btn btn-danger col-xs-12" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
+            </div>
+            <br>
+            <div class="row">
+                <button type="button" class="btn btn-info col-xs-12" data-toggle="modal" data-target="#passwordModal">Change Password</button>
+            </div>
+        </div>
+    </form>
+
+    <form name="passwordChangeForm" role="form" novalidate>
+
+    <!-- Modal -->
+    <div id="passwordModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change Password</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group"
+                         ng-class="{ 'has-error' : passwordChangeForm.changePassword.$invalid && (!passwordChangeForm.changePassword.$pristine || passwordChangeForm.changePassword.$touched) }">
+                        <input type="password" name="changePassword" ng-model="changePassword" id="changePassword"
+                               tabindex="2" class="form-control" placeholder="Password" required>
+                        <div ng-show="passwordChangeForm.changePassword.$invalid && (!passwordChangeForm.changePassword.$pristine || passwordChangeForm.changePassword.$touched) "
+                             class="help-block">
+                            Please enter your password!
+                        </div>
+                    </div>
+                    <div class="form-group"
+                         ng-class="{ 'has-error' : passwordChangeForm.changePasswordConfirm.$invalid && (passwordChangeForm.changePasswordConfirm.$touched || passwordChangeForm.changePasswordConfirm.$error.pwcheck) }">
+                        <input type="password" name="changePasswordConfirm" ng-model="changePasswordConfirm" id="changePasswordConfirm" tabindex="2"
+                               class="form-control" placeholder="Confirm Password" pw-check="changePassword"  required>
+                        <div ng-show="passwordChangeForm.changePasswordConfirm.$invalid && (passwordChangeForm.changePasswordConfirm.$touched) "
+                             class="help-block">
+                            Please confirm your password!
+                        </div>
+                        <div class="help-block" ng-show="passwordChangeForm.registerPasswordConfirm.$error.pwcheck">Your passwords don't match.</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" ng-click="submitPasswordChange()" class="btn btn-default" ng-disabled="passwordChangeForm.$invalid || passwordChangeForm.$pristine">Change</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+        </form>
+    <form name="deleteAccountForm" role="form" novalidate>
+        <div id="deleteAccountModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Enter your password to delete the account</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group"
+                             ng-class="{ 'has-error' : deleteAccountForm.password.$invalid && (!deleteAccountForm.password.$pristine || deleteAccountForm.password.$touched) }">
+                            <input type="password" name="password" ng-model="password" id="password"
+                                   tabindex="2" class="form-control" placeholder="Password" required>
+                            <div ng-show="deleteAccountForm.password.$invalid && (!deleteAccountForm.password.$pristine || deleteAccountForm.password.$touched) "
+                                 class="help-block">
+                                Please enter your password!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" ng-click="deleteAccount()" class="btn btn-default" ng-disabled="deleteAccountForm.$invalid || deleteAccountForm.$pristine">Confirm</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

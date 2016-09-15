@@ -1,0 +1,91 @@
+<div class="container-fluid">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>#</th>
+            <th>Title</th>
+            <th>Main Author</th>
+            <th>Date Submitted</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="submission_table">
+        <tr ng-repeat-start="(index, submission) in submissions">
+            <td>
+                <button data-toggle="collapse" class="btn btn-default btn-xs" data-target="#data{{index}}"
+                        data-parent="#submission_table"
+                        class="accordion-toggle" data-ng-click="toggle = !toggle"><span
+                        class="glyphicon glyphicon-eye-open" ng-class="{'glyphicon-eye-close' : toggle}"></span>
+                </button>
+            </td>
+            <td>{{index+1}}</td>
+            <td>{{submission.title}}</td>
+            <td>{{submission.main_author_name | capitalize:true}}</td>
+            <td>{{submission.date_submitted | amDateFormat:'DD.MM.YYYY'}}</td>
+            <td><span class="label
+                        ng-class:{'custom-danger': submission.status == 'rejected',
+                                'custom-warning': submission.status == 'incomplete',
+                                'custom-info': submission.status == 'withdrawn',
+                                'custom-success': submission.status == 'complete',
+                                'custom-accepted': submission.status == 'accepted'};">
+                {{submission.status}}</span></td>
+            <td>
+                <input type="button" ui-sref="submission-with-id({id: submission._id})" class="btn btn-primary" value="Details">
+            </td>
+        </tr>
+        <tr ng-repeat-end>
+            <td colspan="12" class="hiddenRow" class="accordion-group">
+                <div class="accordian-body collapse" id="data{{index}}">
+                    <div class=" section">
+                        <table class="table">
+                            <tr class="info">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Title: </label></div>
+                                        <div class="col-md-10">{{submission.title}}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Abstract: </label></div>
+                                        <div class="col-md-10">{{submission.abstract}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Keywords: </label></div>
+                                        <div class="col-md-10">{{submission.keywords.join(', ')}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>File: </label></div>
+                                        <div class="col-md-2">
+                                            <button ng-if="submission.pdf_location" class="btn btn-sm btn-info" type="button"
+                                                    ng-click="downloadFile(submission.title, submission.pdf_location)">
+                                                    <span class="pull-left glyphicon glyphicon-save-file"
+                                                          aria-hidden="true"></span>Download File
+                                            </button>
+                                            <p ng-if="!submission.pdf_location" >No file uploaded!!</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

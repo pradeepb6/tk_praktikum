@@ -1,0 +1,65 @@
+<nav class="navbar navbar-inverse"  ng-controller="navController">
+        <div class="navbar-header" id="nav-main">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Conference Management System</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li ui-sref-active="active" ng-if="can('isAuthor') || can('isReviewer')">
+                    <a ui-sref="dashboard" class="hidden-xs">Dashboard</a>
+                    <a ui-sref="dashboard" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Dashboard</a>
+                </li>
+                <li ui-sref-active="active" ng-if="can('isAuthor')">
+                    <a ui-sref="submission" class="hidden-xs">Submission</a>
+                    <a ui-sref="submission" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Submission</a>
+                </li>
+                <!--<li ui-sref-active="active" ng-if="can('isReviewer')">-->
+                    <!--<a ui-sref="reviewDashboard" class="hidden-xs">Review Dashboard</a>-->
+                    <!--<a ui-sref="reviewDashboard" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Review Dashboard</a>-->
+                <!--</li>-->
+                <li ui-sref-active="active" ng-if="can('isChair')">
+                    <a ui-sref="chairDashboard" class="hidden-xs">Dashboard</a>
+                    <a ui-sref="chairDashboard" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Dashboard</a>
+                </li>
+                <li ui-sref-active="active" ng-if="can('isChair')">
+                    <a ui-sref="chairAuthors" class="hidden-xs">Authors</a>
+                    <a ui-sref="chairAuthors" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Authors</a>
+                </li>
+                <li ui-sref-active="active" ng-if="can('isChair')">
+                    <a ui-sref="chairReviewers" class="hidden-xs">Reviewers</a>
+                    <a ui-sref="chairReviewers" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Reviewers</a>
+                </li>
+                <li ui-sref-active="active" ng-if="can('isChair')">
+                    <a ui-sref="chairSubmissionMaster" class="hidden-xs">Submissions</a>
+                    <a ui-sref="chairSubmissionMaster" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Submission Master</a>
+                </li>
+                <li ui-sref-active="active" ng-if="can('isChair')">
+                    <a ui-sref="chairReviewAssign" class="hidden-xs">Assign Review</a>
+                    <a ui-sref="chairReviewAssign" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Review Assign</a>
+                </li>
+                <li ui-sref-active="active" ng-if="can('isChair')">
+                    <a ui-sref="chairReviewMaster" class="hidden-xs">Reviews</a>
+                    <a ui-sref="chairReviewMaster" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Review Master</a>
+                </li>
+                <li ui-sref-active="active" ng-if="can('isChair')">
+                    <a ui-sref="conference" class="hidden-xs">Settings</a>
+                    <a ui-sref="conference" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Maintenance</a>
+                </li>
+                <li ui-sref-active="active" ng-if="can('isAuthor') || can('isReviewer') || can('isChair')">
+                    <a ui-sref="profile" class="hidden-xs">Profile</a>
+                    <a ui-sref="profile" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse">Profile</a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href ng-if="userIsLoggedIn" class="hidden-xs" ng-show="can('logout')" ng-click="user_logout()">Logout</a>
+                    <a href ng-if="userIsLoggedIn" class="visible-xs" ng-show="can('logout')" ng-click="user_logout()" data-toggle="collapse" data-target=".navbar-collapse">Logout</a>
+                </li>
+            </ul>
+        </div>
+</nav>

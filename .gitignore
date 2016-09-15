@@ -1,0 +1,9 @@
+.idea
+node_modules
+bower_components
+config.js
+!config_template.js
+npm-debug.log
+.vagrant
+Vagrantfile
+uploads

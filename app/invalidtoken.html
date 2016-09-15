@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verified</title>
+    <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <style>
+        .margin-top-20 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body class="text-center container">
+<p class="alert-danger margin-top-20">Invalid token</p>
+<br>
+<p>Please visit our <a href="http://localhost:3000/">website</a> to reset password. </p>
+<script>
+    setTimeout(function(){
+        window.location.href = "http://localhost:3000/";
+    }, 3000);
+</script>
+</body>
+</html>

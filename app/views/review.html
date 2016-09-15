@@ -1,0 +1,214 @@
+<div class="clearfix">
+    <div class="row">
+        <div ng-show="status && reviewForm.$pristine" class="alert alert-{{status}}"
+             style="margin-right: 20px; margin-left: 20px">
+            {{saveMessage}}
+        </div>
+        <div ng-if="!isReviewOpen" class="centered">
+            <div>
+                <h1> {{ReviewOpenMessage ||
+                    ReviewCloseMessage}} </h1>
+                <br> <b><i>{{ message }}</i></b><br>
+                <br> {{regards}}
+                <br> {{signature}}
+            </div>
+        </div>
+        <div ng-show="isReviewOpen || review.reviewed_date">
+
+
+            <form name="reviewForm" class="form-horizontal" ng-submit="submitReview()" role="form" novalidate>
+                <div class="col-md-12">
+                    <div class="form-group hidden-xs">
+                        <div class="col-sm-12">
+                            <div class="col-sm-1 pull-right">
+                                <button type="button" ng-show="isReviewOpen && review.reviewed_date" class="btn btn-lg pull-right"
+                                        ng-class="{'btn-info' : edit_mode || !review.reviewed_date, 'btn-warning': !edit_mode && review.reviewed_date}"
+                                        ng-click="undoChanges(edit_mode)">
+                                    <span class="glyphicon"
+                                          ng-class="{'glyphicon-log-out' : edit_mode|| !review.reviewed_date, 'glyphicon-edit': !edit_mode && review.reviewed_date}"></span>
+                                </button>
+                            </div>
+                            <div class="col-sm-1 pull-right">
+                                <button type="submit" ng-show="isReviewOpen && (edit_mode || !review.reviewed_date)"
+                                        class="btn btn-lg pull-right btn-success"
+                                        ng-disabled="(reviewForm.$invalid || reviewForm.$pristine)">
+                                    <span class="glyphicon glyphicon-floppy-saved"></span>
+                                </button>
+                            </div>
+
+                            <div class="col-sm-1 pull-right">
+                                <button ng-show="edit_mode || !review.reviewed_date" type="button" class="btn btn-default btn-lg pull-right"
+                                        ng-click="resetReviewForm()">
+                                    <span class="glyphicon glyphicon-repeat"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visible-xs col-xs-12 padding-bottom-20">
+                    <div class="row">
+                        <div class="col-xs-4 pull-right">
+                            <button type="button" ng-show="isReviewOpen" class="btn btn-lg pull-right"
+                                    ng-class="{'btn-info' : edit_mode, 'btn-warning': !edit_mode}"
+                                    ng-click="undoChanges(edit_mode)">
+                                    <span class="glyphicon"
+                                          ng-class="{'glyphicon-log-out' : edit_mode, 'glyphicon-edit': !edit_mode}"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 pull-right">
+                            <button type="submit" ng-show="isReviewOpen && edit_mode"
+                                    class="btn btn-lg pull-right btn-success"
+                                    ng-disabled="(edit_mode) && (reviewForm.$invalid || reviewForm.$pristine)">
+                                <span class="glyphicon glyphicon-floppy-saved"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 pull-right">
+                            <button ng-show="edit_mode" type="button" class="btn btn-default btn-lg pull-right"
+                                    ng-click="resetReviewForm()">
+                                <span class="glyphicon glyphicon-repeat"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">
+                        Expertise </label>
+                    <h3 ng-show="!edit_mode && review.reviewed_date"><span class="label col-md-3"
+                                                                           style="margin-left: 20px"
+                                                                           ng-class="expertise[review.expertise-1][0]">{{expertise[review.expertise-1][1]}}</span>
+                    </h3>
+                    <div ng-show="edit_mode || !review.reviewed_date" class="col-sm-8">
+                        <label class="radio-inline">
+                            <input type="radio" name="expertise" ng-model="review.expertise" value="1"
+                                   ng-required="true">
+                            None
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="expertise" ng-model="review.expertise" value="2"
+                                   ng-required="true">
+                            Basic
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="expertise" ng-model="review.expertise" value="3"
+                                   ng-required="true">
+                            Sufficient
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="expertise" ng-model="review.expertise" value="4"
+                                   ng-required="true">
+                            Good
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="expertise" ng-model="review.expertise" value="5"
+                                   ng-required="true">
+                            Expert
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">
+                        Evaluation </label>
+                    <h3 ng-show="!edit_mode && review.reviewed_date"><span class="label col-md-3"
+                                                                           style="margin-left: 20px"
+                                                                           ng-class="eval[review.overall_evaluation-1][0]">{{eval[review.overall_evaluation-1][1]}}</span>
+                    </h3>
+                    <div ng-show="edit_mode || !review.reviewed_date" class="col-sm-8">
+                        <label class="radio-inline">
+                            <input type="radio" name="overall_evaluation" ng-model="review.overall_evaluation" value="1"
+                                   ng-required="true">
+                            Strongly Rejected
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="overall_evaluation" ng-model="review.overall_evaluation" value="2"
+                                   ng-required="true">
+                            Rejected
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="overall_evaluation" ng-model="review.overall_evaluation" value="3"
+                                   ng-required="true">
+                            Satisfactory Acceptance
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="overall_evaluation" ng-model="review.overall_evaluation" value="4"
+                                   ng-required="true">
+                            Fairly Accepted
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="overall_evaluation" ng-model="review.overall_evaluation" value="5"
+                                   ng-required="true">
+                            Strongly Accepted
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{ 'has-error' : reviewForm.summary.$invalid && (!reviewForm.summary.$pristine || reviewForm.summary.$touched) }">
+                    <label class="control-label col-sm-2"
+                           for="summary">Summary </label>
+                    <div class="col-sm-8">
+                <textarea ng-disabled="!(edit_mode || !review.reviewed_date)" class="form-control"
+                          ng-model="review.summary" rows="5" id="summary" name="summary"
+                          placeholder="Summary of the evaluation " required></textarea>
+                        <div ng-show="reviewForm.summary.$invalid && (!reviewForm.summary.$pristine || reviewForm.summary.$touched) "
+                             class="help-block">
+                            Please provide Summary!!
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{ 'has-error' : reviewForm.strongPoints.$invalid && (!reviewForm.strongPoints.$pristine || reviewForm.strongPoints.$touched) }">
+                    <label class="control-label col-sm-2"
+                           for="strongPoints">Major Strong
+                        Points</label>
+                    <div class="col-sm-8">
+                    <textarea ng-disabled="!(edit_mode || !review.reviewed_date)" class="form-control"
+                              ng-model="review.major_strong_points" rows="5" name="strongPoints"
+                              id="strongPoints" placeholder="Major Strong Points" required></textarea>
+                        <div ng-show="reviewForm.strongPoints.$invalid && (!reviewForm.strongPoints.$pristine || reviewForm.strongPoints.$touched) "
+                             class="help-block">
+                            Please provide strong points!!
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{ 'has-error' : reviewForm.weakPoints.$invalid && (!reviewForm.weakPoints.$pristine || reviewForm.weakPoints.$touched) }">
+                    <label class="control-label col-sm-2"
+                           for="weakPoints">Major
+                        Weak Points</label>
+                    <div class="col-sm-8">
+                    <textarea ng-disabled="!(edit_mode || !review.reviewed_date)" class="form-control"
+                              ng-model="review.weak_points" rows="5" name="weakPoints"
+                              id="weakPoints" placeholder="Major Weak Points" required></textarea>
+                        <div ng-show="reviewForm.weakPoints.$invalid && (!reviewForm.weakPoints.$pristine || reviewForm.weakPoints.$touched) "
+                             class="help-block">
+                            Please provide weak points!!
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{ 'has-error' : reviewForm.detailed_comments.$invalid && (!reviewForm.detailed_comments.$pristine || reviewForm.detailed_comments.$touched) }">
+                    <label class="control-label col-sm-2"
+                           for="detailed_comments">Brief
+                        Comments on the
+                        Article</label>
+                    <div class="col-sm-8">
+                <textarea ng-disabled="!(edit_mode || !review.reviewed_date)" class="form-control"
+                          ng-model="review.detailed_comments" rows="5" id="detailed_comments"
+                          name="detailed_comments"
+                          placeholder="Brief Comments on the Article " required></textarea>
+                        <div ng-show="reviewForm.detailed_comments.$invalid && (!reviewForm.detailed_comments.$pristine || reviewForm.detailed_comments.$touched ) "
+                             class="help-block">
+                            Please provide brief comments on
+                            this Article!!
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

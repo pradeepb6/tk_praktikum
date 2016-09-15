@@ -1,0 +1,64 @@
+<style>
+    .modal-body {
+        /* 100% = dialog height, 120px = header + footer */
+        max-height: calc(100vh - 210px);
+        overflow-y: auto;
+    }
+</style>
+<div class="row centered">
+    <div class="col col-sm-7 col-sm-offset-1">
+        <h2>Assign papers for review</h2>
+        <div ng-show="reviewers.length < 0">
+            There are no submissions to assign!!
+        </div>
+        <div class="card col-sm-12 col-xs-12 col-md-12" ng-repeat="reviewer in reviewers">
+            <div class="card-block">
+                <p class="card-title">
+                    <a ui-sref="chairUserDetail({id: reviewer._id})">{{reviewer.first_name | capitalize }} {{reviewer.last_name | capitalize}}</a>
+                    <button type="button" class="btn btn-primary pull-right" ng-click="assignForUser(reviewer)"
+                            data-toggle="modal" data-target="#myModal">Assign</button>
+                </p>
+            </div>
+            <ul class="list-group list-group-flush" ng-if="reviewer.assigned_submissions.length > 0">
+                <li class="list-group-item col-md-6" ng-repeat="assigned_submission in reviewer.assigned_submissions">
+                    <a ui-sref="chairSubmissionDetail({id: assigned_submission._id})">{{assigned_submission.title}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="myModalLabel">Paper assignment for review</h3>
+            </div>
+            <div class="modal-body">
+                <div ng-if="message" class="alert alert-info">{{ message }}</div>
+                <div class="list-group-item active">
+                    <h4 class="list-group-item-heading">Select papers to assign for user {{ currentUser.first_name | capitalize}} {{currentUser.last_name | capitalize }}</h4>
+                    <p class="list-group-item-text">Total assigned papers: {{ totalAssignedPapersForUser }}</p>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="submission in submissions">
+                        <label class="checkbox-inline checkbox-inline title">
+                            <input  ng-model="selectedSubmissionsIndex[$index]" type="checkbox"  ng-disabled="isAuthorForSubmission(currentUser._id, submission._id)">
+                            <strong>{{submission.title | capitalize}}</strong>
+                            <p>Submitted on: {{ submission.date_submitted | amDateFormat:'DD.MM.YYYY'}}</p>
+
+                        </label>
+                        <span class="badge pull-right alert-success" ng-class="{'alert-warning': submission.count == 0}">Assigned to {{ submission.count }} reviewer<span ng-if="submission.count > 1">s</span></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveReviews()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

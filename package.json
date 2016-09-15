@@ -1,0 +1,39 @@
+{
+  "name": "TK_Praktikum",
+  "version": "0.0.1",
+  "description": "A Conference Management System",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@scm.informatik.tu-darmstadt.de/iptk-ss2016/iptk-ss2016-team-mike.git"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run grunt\" \"npm run grunt-watch\" ",
+    "grunt": "grunt",
+    "grunt-watch": "grunt watch"
+  },
+  "author": "Team Mike",
+  "license": "private",
+  "dependencies": {
+    "async": "^2.0.1",
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.1",
+    "concurrently": "^2.2.0",
+    "express": "^4",
+    "install": "^0.8.1",
+    "jsonwebtoken": "^7.0.0",
+    "mongoose": "4.5.8",
+    "multer": "^1.2.0",
+    "nodemailer": "^2.5.0",
+    "npm": "3.10.5",
+    "path": "^0.12.7",
+    "randomstring": "^1.1.5"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-express": "^1.4.1",
+    "grunt-express-server": "^0.5.3",
+    "grunt-nodemon": "^0.4.2"
+  }
+}

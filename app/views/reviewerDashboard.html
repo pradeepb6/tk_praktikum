@@ -1,0 +1,160 @@
+<div class="container-fluid">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>#</th>
+            <th>Title</th>
+            <th>Main Author</th>
+            <th>Date Submitted</th>
+            <th>Status</th>
+            <th>Review Date</th>
+            <th>Review Status</th>
+        </tr>
+        </thead>
+        <tbody id="submission_table">
+        <tr ng-repeat-start="(index, review_with_submission) in reviews">
+            <td>
+                <button data-toggle="collapse" class="btn btn-default btn-xs accordion-toggle" data-target="#data{{index}}"
+                        data-parent="#submission_table"
+                        data-ng-click="toggle = !toggle"><span
+                        class="glyphicon glyphicon-eye-open" ng-class="{'glyphicon-eye-close' : toggle}"></span>
+                </button>
+            </td>
+            <td>{{index+1}}</td>
+            <td>{{review_with_submission.submission_details.title}}</td>
+            <td>{{review_with_submission.submission_details.main_author | capitalize:true}}</td>
+            <td>{{review_with_submission.submission_details.date_submitted | date}}</td>
+            <td><span class="label" ng-class="{'custom-danger': review_with_submission.submission_details.status == 'rejected',
+                                        'custom-warning': review_with_submission.submission_details.status == 'incomplete',
+                                        'custom-info': review_with_submission.submission_details.status == 'withdrawn',
+                                        'custom-success': review_with_submission.submission_details.status == 'complete',
+                                        'custom-accepted': review_with_submission.submission_details.status == 'accepted'}">{{review_with_submission.submission_details.status}}</span></td>
+            <td><span ng-hide="review_with_submission.reviewed_date">Not Yet Reviewed</span>{{review_with_submission.reviewed_date
+                | date}}
+            </td>
+            <td><span class="label"
+                      ng-class="{'label-danger':getReviewStatus(index) === 0, 'label-warning':getReviewStatus(index) === 1, 'label-success':getReviewStatus(index) === 2}">{{review_status[getReviewStatus(index)]}}</span>
+            </td>
+
+        </tr>
+        <tr ng-repeat-end>
+            <td colspan="12" class="hiddenRow accordion-group">
+                <div class="accordian-body collapse" id="data{{index}}">
+                    <div class=" section">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Title: </label></div>
+                                        <div class="col-md-10">{{review_with_submission.submission_details.title}}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Abstract: </label></div>
+                                        <div class="col-md-10">{{review_with_submission.submission_details.abstract}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Keywords: </label></div>
+                                        <div class="col-md-10"><span
+                                                class="label label-success col-xs-1" style="margin-right: 10px"
+                                                ng-repeat="kw in review_with_submission.submission_details.keywords">{{kw}}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Authors: </label></div>
+                                        <div class="col-md-10">
+                                            <h4>{{review_with_submission.submission_details.main_author |
+                                                capitalize:true}}
+                                                <small ng-repeat="user in review_with_submission.submission_details.co_authors">
+                                                    {{user | capitalize:true}}
+                                                </small>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Submission: </label></div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-sm btn-info" type="button"
+                                                    ng-click="downloadFile(index)">
+                                                    <span class="pull-left glyphicon glyphicon-save-file" style="margin-right: 10px"
+                                                          aria-hidden="true"></span>Download File
+                                            </button>
+
+                                        </div>
+                                        <div ng-show="!review_with_submission.showFile" class="col-md-2">
+                                            <button class="btn btn-sm btn-info" type="button"
+                                                    ng-click="pdfDisplay(true, index)">
+                                                    <span class="pull-left glyphicon glyphicon-file" style="margin-right: 10px"
+                                                          aria-hidden="true"></span>View File
+                                            </button>
+
+
+                                        </div>
+                                        <div ng-show="review_with_submission.showFile" class="col-md-2">
+                                            <button class="btn btn-sm btn-info" type="button"
+                                                    ng-click="pdfDisplay(false, index)">
+                                                    <span class="pull-left glyphicon glyphicon-file"
+                                                          aria-hidden="true" style="margin-right: 10px"></span>Hide File
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <object ng-show="review_with_submission.showFile"
+                                                ng-attr-data="{{review_with_submission.filePath}}"
+                                                style="width: 100%; height:1000px" name="paper"></object>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading accordion-toggle" data-target="#review_info{{index}}"
+                                             data-toggle="collapse" ng-click="show_review = !show_review">
+                                            <div class="row">
+                                                <div class="col-md-11"><label>Your Review</label>
+                                                </div>
+                                                <div class="col-md-1 pull-right">
+                                                    <span class="glyphicon"
+                                                          ng-class="{'glyphicon-chevron-up' : show_review, 'glyphicon-chevron-down' : !show_review}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body accordian-body collapse"
+                                             id="review_info{{index}}">
+                                            <review-form shadow="review_with_submission"></review-form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

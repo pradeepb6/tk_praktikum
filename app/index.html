@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="TKApp">
+
+<head>
+    <title>TK</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../bower_components/ng-tags-input/ng-tags-input.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../bower_components/ng-tags-input/ng-tags-input.min.css">
+    <link rel="stylesheet" type="text/css" href="../bower_components/nvd3/build/nv.d3.css">
+    <link rel="stylesheet" type="text/css" href="styles/app.css">
+
+</head>
+
+<body ng-cloak>
+<div ng-include="'views/nav.html'"></div>
+<div class="container" ui-view></div>
+
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/ngstorage/ngStorage.min.js"></script>
+<script src="../bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+<script src="../bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+<script src="../bower_components/ng-tags-input/ng-tags-input.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="../bower_components/d3/d3.js"></script>
+<script src="../bower_components/nvd3/build/nv.d3.js"></script> <!-- or use another assembly -->
+<script src="../bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+<script src="../bower_components/moment/moment.js"></script>
+<script src="../bower_components/angular-moment/angular-moment.js"></script>
+<script src="../bower_components/angular-acl/angular-acl.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers/navController.js"></script>
+<script src="js/controllers/profileController.js"></script>
+<script src="js/controllers/submissionController.js"></script>
+<script src="js/controllers/reviewController.js"></script>
+<script src="js/controllers/dashboardController.js"></script>
+<script src="js/controllers/loginController.js"></script>
+<script src="js/controllers/importantDatesEventsController.js"></script>
+<script src="js/controllers/chair/dashboardController.js"></script>
+<script src="js/controllers/chair/reviewAssignController.js"></script>
+<script src="js/controllers/chair/reviewMasterController.js"></script>
+<script src="js/controllers/chair/reviewDetailController.js"></script>
+<script src="js/controllers/chair/submissionMasterController.js"></script>
+<script src="js/controllers/chair/submissionDetailController.js"></script>
+<script src="js/controllers/chair/userMasterController.js"></script>
+<script src="js/controllers/chair/userDetailController.js"></script>
+<script src="js/controllers/chair/authorsController.js"></script>
+<script src="js/controllers/chair/reviewersController.js"></script>
+<script src="js/factories/authFactory.js"></script>
+<script src="js/factories/userFactory.js"></script>
+<script src="js/factories/submissionFactory.js"></script>
+<script src="js/factories/reviewFactory.js"></script>
+<script src="js/controllers/conferenceController.js"></script>
+<script src="js/factories/adminFactory.js"></script>
+<script src="js/directives/passwordCheckDirective.js"></script>
+<script src="js/directives/validFileDirective.js"></script>
+<script src="js/filters/capitalizeFilter.js"></script>
+<script>
+//    To toggle the nav in mobile mode if user clicks on the screen other than navbar
+    $(document).ready(function () {
+        $(document).click(function (event) {
+            var clickover = $(event.target);
+            var _opened = $(".navbar-collapse").hasClass("navbar-collapse collapse in");
+            if (_opened === true && !clickover.hasClass("navbar-toggle")) {
+                $("button.navbar-toggle").click();
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

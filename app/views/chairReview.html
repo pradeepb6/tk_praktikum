@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col col-sm-7 col-sm-offset-1">
+        <h2>Assign papers for review</h2>
+        <ul class="list-group" ng-repeat="reviewer in reviewers">
+            <li class="list-group-item">
+                <a href ng-click="assignForUser(reviewer)" data-toggle="modal" data-target="#myModal">
+                    <h3 class="list-group-item-heading">{{reviewer.first_name | capitalize }} {{reviewer.last_name | capitalize}}</h3>
+                </a>
+
+                <p class="list-group-item-text">
+                    <ul class="list">
+                        <li class="list-item" ng-repeat="assigned_submission in reviewer.assigned_submissions">
+                            {{assigned_submission.title | capitalize:true}}
+                        </li>
+                    </ul>
+                </p>
+
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="myModalLabel">Paper assignment for review</h3>
+            </div>
+            <div class="modal-body">
+                <div ng-if="message" class="alert alert-info">{{ message }}</div>
+                <div class="list-group-item active">
+                    <h4 class="list-group-item-heading">Select papers to assign for user {{ currentUser.first_name | capitalize }} {{currentUser.last_name | capitalize}}</h4>
+                    <p class="list-group-item-text">Total assigned papers: {{ totalAssignedPapersForUser }}</p>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="submission in submissions">
+                        <label class="checkbox-inline checkbox-inline title">
+                            <input  ng-model="selectedSubmissionsIndex[$index]" type="checkbox"  ng-disabled="submission._id == userSubmission._id"> 
+                            <strong>{{submission.title | capitalize:true}}</strong>
+                            <p>Submitted on: {{ submission.date_submitted | amDateFormat:'DD.MM.YYYY'}}</p>
+                        
+                        </label>
+                        <span class="badge alert-success" ng-class="{'alert-warning': submission.count == 0}">Assigned to {{ submission.count }} Offset is <= 10: {{submission.count <= 10}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveReviews()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="row">
+    <div class="col col-sm-7 col-sm-offset-1">
+        <h2>Assign papers for review</h2>
+        <uib-accordion close-others="false">
+            <div ng-repeat="user in users">
+                <div uib-accordion-group class="panel-default" is-open="openIndex[$index]">
+                    <uib-accordion-heading>
+                        <p style="text-transform: capitalize">{{user.first_name + ' ' + user.last_name}}
+                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': openIndex[$index], 'glyphicon-chevron-right': !openIndex[$index]}"></i>
+                        </p>
+                    </uib-accordion-heading>
+                    This is just some content to illustrate fancy headings. {{user.first_name}}
+                    <div ng-repeat="submission in submissions">
+                        <label>
+                    <input type="checkbox" ng-model="submission.title" name="submission.title">
+                    {{submission.title}}
+                    </label>
+                    </div>
+                </div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>-->

@@ -1,0 +1,71 @@
+<div class="clearfix">
+    <div>
+        {{page}}
+    </div>
+
+    <h2>Welcome to TK Conference Management System</h2>
+    <div class="col col-sm-8">
+        <p>Currently, there is no conference going on.</p>
+    </div>
+
+
+    <form name="conferenceForm"  class="form-horizontal"  ng-submit="addConference()" role="form"  novalidate>
+        <div class="form-group">
+            <label class="control-label col-sm-2"> Create a new conference ?  </label>
+            <div class="form-group hidden-xs">
+                <div class="col-sm-10">
+                    <div class="pull-right col-md-1">
+                        <button type="button" class="btn btn-default pull-right">Create Conference</button>
+                    </div>
+                </div>
+            </div>
+            <div class="visible-xs col-xs-12 padding-bottom-20">
+                <div class="row">
+                    <button type="button" class="btn btn-default col-xs-12">Close</button>
+                </div>
+            </div>
+        </div>
+        <div class="visible-xs col-xs-12 padding-bottom-20">
+            <div class="row">
+                <button type="button" class="btn btn-primary col-xs-12">Create Conference</button>
+            </div>
+            <br>
+            <div class="row">
+                <button type="button" class="btn btn-default col-xs-12">Close</button>
+            </div>
+        </div>
+          <!--can be changed later if required
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="newConference">Add details about new conference </label>
+                    <div class="col-sm-8">
+                <textarea class="form-control" rows="5" id="newConference"
+                          placeholder="Add details about new conference"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group hidden-xs">
+                    <div class="col-sm-10">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary pull-right">Save changes</button>
+                        </div>
+                        <div class="pull-right col-md-1">
+                            <button type="button" class="btn btn-default pull-right">Close</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="visible-xs col-xs-12 padding-bottom-20">
+                    <div class="row">
+                        <button type="button" class="btn btn-primary col-xs-12">Save changes</button>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <button type="button" class="btn btn-default col-xs-12">Close</button>
+                    </div>
+                </div>
+            </div>  -->
+        </form>
+
+
+
+</div>
