@@ -35,6 +35,7 @@ TK Praktikum
     ````
     nodejs initdb.js
     ````
+0. Rename **config_template.js** to **config.js** and add the required information in the config file.
 
 0. Start Node server:
     ```sh
