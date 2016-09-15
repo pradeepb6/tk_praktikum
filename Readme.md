@@ -7,7 +7,7 @@ TK Praktikum
 
 0. Clone this repo:
     ```
-    git clone ssh://git@scm.informatik.tu-darmstadt.de/iptk-ss2016/iptk-ss2016-team-mike.git
+    git clone https://github.com/pradeepb6/tk_praktikum.git
     ```
    
 0. Install NodeJS, mongodb, grunt (globally) and bower (globally)
